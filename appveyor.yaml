@@ -1,0 +1,10 @@
+# appveyor.yml
+build: off
+
+clone_folder: c:\gopath\src\github.com\$username\$project
+
+environment:
+  GOPATH: c:\gopath
+
+test_script:
+  - go run hello-world.go
