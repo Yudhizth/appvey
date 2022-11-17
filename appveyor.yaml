@@ -1,4 +1,12 @@
 # appveyor.yml
+build : off
+
+Configuration: Release
+
+image: Windows 10
+
+environment:
+  GOPATH: C:\Users\appveyor\gopath
 
 test_script:
   - go run hello-world.go
