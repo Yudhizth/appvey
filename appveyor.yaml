@@ -1,12 +1,39 @@
-# appveyor.yml
-build : off
+version: 1.0.0.{build}
 
-Configuration: Release
+platform: x64
 
-image: Windows 10
+branches:
+  only:
+    - master
+
+clone_folder: c:\gopath\src\github.com\Yudhizth\appvey
 
 environment:
-  GOPATH: C:\Users\appveyor\gopath
+  GOPATH: c:\gopath
 
-test_script:
-  - go run hello-world.go
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+
+build_script:
+  - go build -o buildOutput\myapp -i .
+
+build_script:
+  - ps: .\build.ps1
+
+artifacts:
+  - path: buildOutput/myapp
+    name: binary
+
+deploy:
+  release: myapp-$(appveyor_build_version)
+  description: 'This is a release of my awesome application.'
+  provider: GitHub
+  artifact: binary # This is the name we specified in the artifacts section.
+  draft: false
+  prerelease: false
+  on:
+    branch: master
